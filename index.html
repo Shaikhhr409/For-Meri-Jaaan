@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shehnaz ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+body{
+margin:0;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:radial-gradient(circle at top,#1a001a,#000000);
+font-family:'Poppins',sans-serif;
+overflow:hidden;
+text-align:center;
+color:white;
+}
+
+.container{
+position:relative;
+z-index:2;
+padding:20px;
+}
+
+h1{
+font-family:'Dancing Script',cursive;
+font-size:42px;
+color:#ff4da6;
+text-shadow:0 0 15px #ff1a75;
+}
+
+img{
+width:240px;
+margin:20px 0;
+transition:0.4s;
+}
+
+button{
+padding:14px 28px;
+margin:10px;
+border:none;
+border-radius:30px;
+font-size:18px;
+cursor:pointer;
+transition:0.3s;
+min-width:180px;
+}
+
+.yes{
+background:#00cc66;
+color:white;
+box-shadow:0 0 15px #00ff99;
+}
+
+.no{
+background:#cc0000;
+color:white;
+position:relative;
+}
+
+button:hover{
+transform:scale(1.1);
+}
+
+/* Hearts */
+.heart{
+position:absolute;
+color:#ff4da6;
+font-size:20px;
+animation:fall 5s linear infinite;
+}
+
+@keyframes fall{
+0%{transform:translateY(-10vh);opacity:1;}
+100%{transform:translateY(110vh);opacity:0;}
+}
+
+/* Confetti */
+.confetti{
+position:fixed;
+width:10px;
+height:10px;
+top:0;
+animation:confettiFall 3s linear forwards;
+}
+
+@keyframes confettiFall{
+to{transform:translateY(100vh) rotate(720deg);}
+}
+
+/* Fireworks */
+.fireworks{
+position:fixed;
+width:100%;
+height:100%;
+background:url('https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif') center/cover no-repeat;
+display:none;
+z-index:1;
+}
+
+/* Popup */
+.ring-popup{
+display:none;
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:#111;
+padding:30px;
+border-radius:20px;
+box-shadow:0 0 40px gold;
+z-index:10;
+}
+</style>
+</head>
+
+<body>
+
+<div class="fireworks" id="fireworks"></div>
+
+<div class="container">
+<h1>Shehnaz ❤️ Will You Be My Valentine?</h1>
+
+<img id="teddy" src="chiikawa-hachiware-01.gif">
+
+<br>
+
+<button class="yes" id="yesBtn" onclick="sayYes()">YES 💚</button>
+<button class="no" id="noBtn" onclick="sayNo()">No ❤️</button>
+</div>
+
+<div class="ring-popup" id="ringPopup">
+<h2>💍 She Said YES! 💍</h2>
+<p>Hafizul ❤️ Shehnaz</p>
+<p>November Wedding 2026 👑💎</p>
+<img src="chiikawa-hachiware-09.gif" width="150">
+</div>
+
+<script>
+
+/* Red Button Messages */
+const noMessages = [
+"Are you positive? 🤔",
+"Pookie please…. 😢",
+"I will be really sad 💔",
+"Very very very sad….. 😭",
+"Pleaseeeee….???? 🥺",
+"Don't do this to meeee….. 😞",
+"Last Chance 😭"
+];
+
+/* GIF Images */
+const images = [
+"chiikawa-hachiware-01.gif",
+"chiikawa-hachiware-02.gif",
+"chiikawa-hachiware-03.gif",
+"chiikawa-hachiware-04.gif",
+"chiikawa-hachiware-05.gif",
+"chiikawa-hachiware-06.gif",
+"chiikawa-hachiware-07.gif",
+"chiikawa-hachiware-08.gif"
+];
+
+let step = 0;
+
+const teddy = document.getElementById("teddy");
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+
+/* Music */
+const bgMusic = new Audio("Future.mp3");
+const yesMusic = new Audio("Song.mpeg");
+
+bgMusic.loop = true;
+bgMusic.volume = 0.6;
+yesMusic.volume = 0;
+
+/* Autoplay immediately */
+window.onload = function(){
+bgMusic.play().catch(()=>{});
+};
+
+/* Fade Functions */
+function fadeOut(audio, duration){
+let stepTime = 50;
+let steps = duration / stepTime;
+let volumeStep = audio.volume / steps;
+
+let fade = setInterval(function(){
+if(audio.volume - volumeStep > 0){
+audio.volume -= volumeStep;
+}else{
+audio.volume = 0;
+audio.pause();
+clearInterval(fade);
+}
+}, stepTime);
+}
+
+function fadeIn(audio, targetVolume, duration){
+let stepTime = 50;
+let steps = duration / stepTime;
+let volumeStep = targetVolume / steps;
+
+audio.play();
+
+let fade = setInterval(function(){
+if(audio.volume + volumeStep < targetVolume){
+audio.volume += volumeStep;
+}else{
+audio.volume = targetVolume;
+clearInterval(fade);
+}
+}, stepTime);
+}
+
+/* YES */
+function sayYes(){
+
+fadeOut(bgMusic,2000);
+
+setTimeout(function(){
+
+document.getElementById("fireworks").style.display="block";
+document.getElementById("ringPopup").style.display="block";
+
+fadeIn(yesMusic,0.9,3000);
+createConfetti();
+
+},1500);
+}
+
+/* Confetti */
+function createConfetti(){
+for(let i=0;i<150;i++){
+let conf=document.createElement("div");
+conf.className="confetti";
+conf.style.left=Math.random()*100+"%";
+conf.style.background=`hsl(${Math.random()*360},100%,50%)`;
+document.body.appendChild(conf);
+setTimeout(()=>conf.remove(),3000);
+}
+}
+
+/* NO Button */
+function sayNo(){
+
+if(step < noMessages.length){
+noBtn.innerText = noMessages[step];
+teddy.src = images[step+1];
+step++;
+
+yesBtn.style.transform = "scale(" + (1 + step * 0.15) + ")";
+}
+
+/* Escape on last */
+if(step === noMessages.length){
+noBtn.onmouseover=function(){
+this.style.position="absolute";
+this.style.top=Math.random()*80+"%";
+this.style.left=Math.random()*80+"%";
+}
+}
+}
+
+/* Falling Hearts */
+setInterval(()=>{
+const heart=document.createElement("div");
+heart.className="heart";
+heart.style.left=Math.random()*100+"%";
+heart.innerHTML="❤️";
+document.body.appendChild(heart);
+setTimeout(()=>heart.remove(),5000);
+},300);
+
+</script>
+
+</body>
+</html>
